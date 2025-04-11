@@ -88,6 +88,8 @@ async function getMatch(match_code, callback) {
 // salva la vittoria
 function saveWinner(matchCode, winner) {
 
+    console.log("IL VINCITORE E' " +  winner)
+
     try {
         let QueryString = `UPDATE matchs 
                                     SET winner = ${winner}
@@ -142,7 +144,7 @@ getMatch(obj.match_code, (err, matchData) => {
             
                         if (!err) {
                             
-                            let winner = 0;
+                            let winner = null;
             
                             // prende le celle dal risultato della quesry
                             const cells = [
@@ -177,7 +179,7 @@ getMatch(obj.match_code, (err, matchData) => {
                                     && cells[a] === cells[c]   //se la seconda cella è uguale alla terza
                                    ) {
                                     // se una delle possibili combinazioni di vittoria viene soddisfatta allora setta come vincitore
-                                    winner = 1;
+                                    winner = cells[a];
                                 }
                               }
             
@@ -186,7 +188,7 @@ getMatch(obj.match_code, (err, matchData) => {
                               if(result.rows[0].is_remote_match) io.emit('refreshData', result.rows[0].match_code);
             
                               //se uno dei due giocatori ha vinto ...
-                              if(winner == 1){
+                              if(winner != null){
             
                              //salva il vincitore sul database                
                              saveWinner(result.rows[0].match_code, winner);
