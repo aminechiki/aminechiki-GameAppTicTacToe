@@ -8,8 +8,9 @@ client.connect()
   .then(() => console.log('Connessione al DB riuscita!'))
   .catch(err => console.error('Errore di connessione:', err));
 
+
 // inializza la partita
-async function startMatch(callback) {
+function startMatch(callback) {
 
     try {
         // genra il codice univoco che i giocatori possono passarsi
@@ -35,7 +36,7 @@ async function startMatch(callback) {
 }
 
 // torna la lista completa delle partite
-async function getListMatchs(callback) {
+function getListMatchs(callback) {
 
     try {
         let QueryString = `select * from public.matchs
@@ -60,7 +61,7 @@ async function getListMatchs(callback) {
 
 
 // torna un singolo match filtrato per il match code
-async function getMatch(match_code, callback) {
+function getMatch(match_code, callback) {
 
     try {
         let QueryString = `SELECT * FROM matchs WHERE match_code = '${match_code}';`
@@ -114,6 +115,7 @@ function saveWinner(matchCode, winner) {
 // inserisce una nuova mossa eseguita dall'utente
 function insertMove(obj, callback) {
 
+// in base al matchcode passato prendo tutto il record nel database
 getMatch(obj.match_code, (err, matchData) => {
 
     try{
@@ -132,7 +134,7 @@ getMatch(obj.match_code, (err, matchData) => {
             // se il giocatore che ha fatto la mossa è uguale a quello che dovrebbe giocare (current_player)
            if(obj.player == matchData.current_player ){
         
-            // se la cella dove si vuole fare la mossa è libera 
+            // se la cella dove si vuole fare la mossa è libera
             if(cells[obj.cell - 1] == 0) {
         
                 console.log("cella libera")
@@ -146,7 +148,7 @@ getMatch(obj.match_code, (err, matchData) => {
                             
                             let winner = null;
             
-                            // prende le celle dal risultato della quesry
+                            // prende le celle dal risultato della quesry (dopo che è stata inserita la mossa)
                             const cells = [
                                 result.rows[0].cell_01, result.rows[0].cell_02, result.rows[0].cell_03,
                                 result.rows[0].cell_11, result.rows[0].cell_12, result.rows[0].cell_13,
@@ -245,7 +247,7 @@ getMatch(obj.match_code, (err, matchData) => {
 
 
 // abbilita la partita come remota ---> is_remote_mnatch = true
-async function addRemoteUser(obj, callback) {
+function addRemoteUser(obj, callback) {
 
     try {
         console.log(obj)

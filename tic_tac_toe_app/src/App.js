@@ -18,7 +18,7 @@ function Home() {
       },
       body: JSON.stringify({})
     })
-      .then(response => response.json())
+      .then(response => response.json())   //da oggetto ---> parsiing
       .then(data => {
         console.log(data[0]);
 
@@ -47,6 +47,8 @@ function Home() {
 }
 
 function App() {
+
+  // gestione delle route
   return (
     <Router>
       <Routes>
